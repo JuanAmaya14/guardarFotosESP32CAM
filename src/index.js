@@ -4,7 +4,7 @@ const rutas = require("./routes/Rutas");
 
 const app = express();
 
-app.set("appName", "Pasteleria");
+app.set("appName", "ImagenesESP32CAM");
 app.set("host", process.env.APP_HOST);
 app.set("port", process.env.APP_PORT);
 
@@ -25,7 +25,7 @@ async function startServer() {
       );
     });
   } catch (error) {
-    console.error("Error al conectar con la base de datos:", error);
+    console.error("Error:", error);
   }
 }
 

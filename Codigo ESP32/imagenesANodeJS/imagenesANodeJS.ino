@@ -4,8 +4,10 @@
 const char* ssid = "";
 const char* password = "";
 const char* serverName = "";
-const int serverPort = 8083;
+const int serverPort = 3000;
 const char* serverPath = "/subirImagen";
+
+const int led = 33;
 
 void startCamera();
 
@@ -21,6 +23,15 @@ void setup() {
   Serial.println("\nConectado al WiFi");
 
   startCamera();
+
+  pinMode(led, OUTPUT);
+
+  for (int i = 0; i < 3; i++) {
+    digitalWrite(led, LOW);
+    delay(500);
+    digitalWrite(led, HIGH);
+    delay(500);
+  }
 }
 
 void loop() {
@@ -77,6 +88,13 @@ void loop() {
     String response = client.readString();
     Serial.println("Respuesta del servidor:\n" + response);
 
+    for (int i = 0; i < 5; i++) {
+      digitalWrite(led, LOW);
+      delay(500);
+      digitalWrite(led, HIGH);
+      delay(500);
+    }
+
     esp_camera_fb_return(fb);
     client.stop();
   } else {
@@ -123,12 +141,13 @@ void startCamera() {
   if (s != nullptr) {
     s->set_gain_ctrl(s, 0);      // Desactiva control automático de ganancia
     s->set_exposure_ctrl(s, 0);  // Desactiva control automático de exposición
-    s->set_whitebal(s, 1);            // Desactiva balance automático de blancos
+    s->set_whitebal(s, 1);       // Desactiva balance automático de blancos
     s->set_agc_gain(s, 10);      // Establece ganancia fija (entre 0-30)
-    s->set_aec_value(s, 300);   // Valor de exposición manual (cuanto más alto, más luz)
+    s->set_aec_value(s, 300);    // Valor de exposición manual (cuanto más alto, más luz)
     s->set_brightness(s, 0);     // Opcional: sube brillo (de -2 a 2)
   }
 
 
   Serial.println("Cámara iniciada correctamente");
 }
+
